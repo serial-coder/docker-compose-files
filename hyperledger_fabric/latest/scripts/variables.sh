@@ -2,16 +2,14 @@
 # Before running `make`, config this files
 # Define some global variables for usage. Will be included by func.sh.
 
-ARCH=amd64
-
-# for the base images, including baseimage, couchdb, kafka, zookeeper
-BASE_IMG_TAG=0.4.15
-
 # For fabric images, including peer, orderer, ca
 FABRIC_IMG_TAG=latest
 
 # Keep the same as in core.yaml, will tag ccenv with this value
-PROJECT_VERSION=2.0.0
+PROJECT_VERSION=2.3.0
+
+# for ccenv, baseos, javaenv, nodeenv
+TWO_DIGIT_VERSION=2.3
 
 # Name of app channel, need to align with the gen_artifacts.sh
 SYS_CHANNEL="testchainid"
@@ -24,8 +22,8 @@ TIMEOUT="90"
 MAX_RETRY=10
 
 # Organization and peers
-ORGS=( 1 2 )
-PEERS=( 0 1 )
+ORGS=(1 2)
+PEERS=(0 1)
 #: "${ORGS:=( 1 2 )}"
 #: "${PEERS:=( 0 1 )}"
 
@@ -64,7 +62,7 @@ ORG2_PEER1_URL="peer1.org2.example.com:7051"
 
 # Chaincode exp02 related
 CC_02_NAME="exp02"
-CC_02_PATH="examples/chaincode/go/chaincode_example02"
+CC_02_PATH="chaincodes/go/chaincode_example02"
 CC_02_INIT_ARGS='{"Args":["init","a","100","b","200"]}'
 CC_02_UPGRADE_ARGS='{"Args":["upgrade","a","100","b","200"]}'
 CC_02_INVOKE_ARGS='{"Args":["invoke","a","b","10"]}'
@@ -80,17 +78,17 @@ CC_MAP_QUERY_ARGS='{"Args":["get","key"]}'
 
 # Chaincode marbles related
 CC_MARBLES_NAME="marblesp"
-CC_MARBLES_PATH="examples/chaincode/go/marbles02_private/go"
+CC_MARBLES_PATH="chaincodes/go/marbles02_private/go"
 CC_MARBLES_INIT_ARGS='{"Args":["init"]}'
 CC_MARBLES_UPGRADE_ARGS='{"Args":["upgrade",""]}'
-CC_MARBLES_INVOKE_INIT_ARGS='{"Args":["initMarble","marble1","blue","10","tom","100"]}' # price is in collectionMarblePrivateDetails
+CC_MARBLES_INVOKE_INIT_ARGS='{"Args":["initMarble","marble1","blue","10","tom","100"]}'   # price is in collectionMarblePrivateDetails
 CC_MARBLES_INVOKE_INIT_ARGS_2='{"Args":["initMarble","marble2","blue","10","tom","100"]}' # price is in collectionMarblePrivateDetails
-CC_MARBLES_INVOKE_TRANSFER_ARGS='{"Args":["transferMarble","marble1","jerry"]}' # price is in collectionMarblePrivateDetails
-CC_MARBLES_QUERY_READ_ARGS='{"Args":["readMarble","marble1"]}' # this requires 'collectionMarbles' collection
-CC_MARBLES_QUERY_READPVTDETAILS_ARGS='{"Args":["readMarblePrivateDetails","marble1"]}' # this requires 'collectionMarblePrivateDetails' collection
-CC_MARBLES_QUERY_READPVTDETAILS_ARGS_2='{"Args":["readMarblePrivateDetails","marble2"]}' # this requires 'collectionMarblePrivateDetails' collection
-CC_MARBLES_COLLECTION_CONFIG="/go/src/examples/chaincode/go/marbles02_private/collections_config.json"
-CC_MARBLES_COLLECTION_CONFIG_NEW="/go/src/examples/chaincode/go/marbles02_private/collections_config_new.json"
+CC_MARBLES_INVOKE_TRANSFER_ARGS='{"Args":["transferMarble","marble1","jerry"]}'           # price is in collectionMarblePrivateDetails
+CC_MARBLES_QUERY_READ_ARGS='{"Args":["readMarble","marble1"]}'                            # this requires 'collectionMarbles' collection
+CC_MARBLES_QUERY_READPVTDETAILS_ARGS='{"Args":["readMarblePrivateDetails","marble1"]}'    # this requires 'collectionMarblePrivateDetails' collection
+CC_MARBLES_QUERY_READPVTDETAILS_ARGS_2='{"Args":["readMarblePrivateDetails","marble2"]}'  # this requires 'collectionMarblePrivateDetails' collection
+CC_MARBLES_COLLECTION_CONFIG="/go/src/chaincodes/go/marbles02_private/collections_config.json"
+CC_MARBLES_COLLECTION_CONFIG_NEW="/go/src/chaincodes/go/marbles02_private/collections_config_new.json"
 
 # unique chaincode params
 CC_NAME=${CC_02_NAME}
@@ -103,7 +101,7 @@ CC_INVOKE_ARGS=${CC_02_INVOKE_ARGS}
 CC_QUERY_ARGS=${CC_02_QUERY_ARGS}
 
 # Generate configs
-GEN_IMG=yeasy/hyperledger-fabric:${FABRIC_IMG_TAG}  # working dir is `/go/src/github.com/hyperledger/fabric`
+GEN_IMG=yeasy/hyperledger-fabric:${FABRIC_IMG_TAG} # working dir is `/go/src/github.com/hyperledger/fabric`
 GEN_CONTAINER=generator
 FABRIC_CFG_PATH=/etc/hyperledger/fabric
 CHANNEL_ARTIFACTS=channel-artifacts
